@@ -5,8 +5,17 @@ import { links } from '../../constant/NavLink';
 import { Link } from 'react-router-dom';
 import profileImg from '../../assets/download.jpg';
 import { CgShoppingCart } from 'react-icons/cg';
+import { motion } from 'framer-motion';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase/firebase.config';
 
 const Header = () => {
+  const login = async () => {
+    const response = await signInWithPopup(auth, provider).then((result) => {
+      console.log(result);
+    });
+  };
+
   return (
     <nav>
       <div className='logo'>
@@ -34,7 +43,12 @@ const Header = () => {
         </div>
 
         <div className='profile-container'>
-          <img src={profileImg} alt='profile' />
+          <motion.img
+            whileTap={{ scale: 0.6 }}
+            src={profileImg}
+            alt='user-profile'
+            onClick={login}
+          />
         </div>
       </div>
     </nav>
