@@ -11,7 +11,5 @@ html {
 
 .main-container {
   width: 100vw;
-  height: min-content;
-  background-color: cadetblue;
-  color: black;
+  height: 100vh;
 }
