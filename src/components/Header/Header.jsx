@@ -35,6 +35,15 @@ const Header = () => {
     }
   };
 
+  const logout = () => {
+    setIsMenu(false);
+    localStorage.clear();
+    dispatch({
+      type: actionType.SET_USER,
+      user: null,
+    });
+  };
+
   return (
     <nav>
       <div className='logo'>
@@ -81,7 +90,7 @@ const Header = () => {
                 </p>
               </Link>
             )}
-            <p>
+            <p onClick={logout}>
               Logout
               <MdLogout />
             </p>

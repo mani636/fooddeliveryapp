@@ -6,8 +6,8 @@ import { AnimatePresence } from 'framer-motion';
 const App = () => {
   return (
     <AnimatePresence>
+      <Header />
       <main className='main-container'>
-        <Header />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
