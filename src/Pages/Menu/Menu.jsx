@@ -1,9 +1,17 @@
 import './Menu.css';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { useStateValue } from '../../context/StateProvider';
+import { useEffect, useState } from 'react';
 
 const Menu = () => {
   const [{ foodItems }, dispatch] = useStateValue();
+  const [data, setData] = useState(foodItems);
+
+  useEffect(() => {
+    setData(
+      foodItems && foodItems.filter((item) => item.category !== 'gallery')
+    );
+  }, [foodItems]);
 
   return (
     <div className='menu'>
@@ -11,8 +19,8 @@ const Menu = () => {
         Our <span>Menu</span>
       </h1>
       <div className='menu-box'>
-        {foodItems &&
-          foodItems.map(({ id, desc, title, price, imageURL }) => (
+        {data &&
+          data.map(({ id, desc, title, price, imageURL }) => (
             <div className='menu-card' key={id}>
               <div className='menu-image'>
                 <img src={imageURL} alt={title} />
