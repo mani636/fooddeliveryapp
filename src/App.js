@@ -5,6 +5,7 @@ import { useStateValue } from './context/StateProvider';
 import { getAllFoodItems } from './utils/firebaseFunction';
 import { useEffect } from 'react';
 import { actionType } from './context/reducer';
+import './index.css';
 
 const App = () => {
   const [{ foodItems }, dispatch] = useStateValue();
@@ -24,10 +25,12 @@ const App = () => {
 
   return (
     <AnimatePresence>
-      <Header />
-      <main className='main-container'>
-        <MainContainer />
-      </main>
+      <div className='main'>
+        <Header />
+        <main className='main-container'>
+          <MainContainer />
+        </main>
+      </div>
     </AnimatePresence>
   );
 };

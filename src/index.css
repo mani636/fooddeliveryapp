@@ -14,3 +14,12 @@ html {
   height: 100vh;
   padding-top: 5rem;
 }
+
+html::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fac031;
+  border-radius: 6px;
+}

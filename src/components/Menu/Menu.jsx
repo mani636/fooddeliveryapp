@@ -2,16 +2,31 @@ import './Menu.css';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { useStateValue } from '../../context/StateProvider';
 import { useEffect, useState } from 'react';
+import { actionType } from '../../context/reducer';
 
 const Menu = () => {
-  const [{ foodItems }, dispatch] = useStateValue();
+  const [{ foodItems, cartItems }, dispatch] = useStateValue();
+  const [items, setItems] = useState([]);
   const [data, setData] = useState(foodItems);
+
+  const addToCart = () => {
+    dispatch({
+      type: actionType.SET_CART_ITEMS,
+      cartItems: items,
+    });
+
+    localStorage.setItem('cartItems', JSON.stringify(items));
+  };
 
   useEffect(() => {
     setData(
       foodItems && foodItems.filter((item) => item.category !== 'gallery')
     );
   }, [foodItems]);
+
+  useEffect(() => {
+    addToCart();
+  }, [items]);
 
   return (
     <div className='menu'>
@@ -20,16 +35,16 @@ const Menu = () => {
       </h1>
       <div className='menu-box'>
         {data &&
-          data.map(({ id, desc, title, price, imageURL }) => (
-            <div className='menu-card' key={id}>
+          data.map((item) => (
+            <div className='menu-card' key={item.id}>
               <div className='menu-image'>
-                <img src={imageURL} alt={title} />
+                <img src={item.imageURL} alt={item.title} />
               </div>
 
               <div className='menu-info'>
-                <h2>{title}</h2>
-                <p>{desc}</p>
-                <h3>${price}.00</h3>
+                <h2>{item.title}</h2>
+                <p>{item.desc}</p>
+                <h3>${item.price}.00</h3>
                 <div className='menu-icon'>
                   <FaStar />
                   <FaStar />
@@ -39,7 +54,12 @@ const Menu = () => {
                 </div>
 
                 <div className='menu-btn'>
-                  <button type='button'>Order Now</button>
+                  <button
+                    type='button'
+                    onClick={() => setItems([...cartItems, item])}
+                  >
+                    Order Now
+                  </button>
                 </div>
               </div>
             </div>

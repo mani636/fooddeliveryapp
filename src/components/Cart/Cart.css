@@ -61,7 +61,7 @@
   width: 10px;
 }
 
-::-webkit-scrollbar-thumb {
+.order-items-container::-webkit-scrollbar-thumb {
   background-color: #444647;
   border-radius: 6px;
 }
@@ -191,8 +191,8 @@
   padding: 0.5rem 0.5rem;
   font-size: 1.25rem;
   font-weight: bold;
-  border-radius: 10px;
-  border: 2px solid black;
+  border-radius: 50px;
+  border: 2px solid rgb(12, 12, 12);
   background-color: #fac031;
   cursor: pointer;
 }

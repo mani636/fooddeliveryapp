@@ -15,9 +15,16 @@ import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 
 const Header = () => {
-  const [{ user, cartItems }, dispatch] = useStateValue();
+  const [{ user, cartItems, cartShow }, dispatch] = useStateValue();
 
   const [isMenu, setIsMenu] = useState(false);
+
+  const showCart = () => {
+    dispatch({
+      type: actionType.SET_CART_SHOW,
+      cartShow: !cartShow,
+    });
+  };
 
   const login = async () => {
     if (!user) {
@@ -59,7 +66,7 @@ const Header = () => {
           })}
         </ul>
 
-        <div className='icon'>
+        <div className='icon' onClick={showCart}>
           <Link>
             <CgShoppingCart />
           </Link>

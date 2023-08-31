@@ -4,12 +4,31 @@ import { MdOutlineClear } from 'react-icons/md';
 import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 import orderImage from '../../assets/cake.jpg';
+import { useStateValue } from '../../context/StateProvider';
+import { actionType } from '../../context/reducer';
 
 const Cart = () => {
+  const [{ cartShow, cartItems }, dispatch] = useStateValue();
+
+  const showCart = () => {
+    dispatch({
+      type: actionType.SET_CART_SHOW,
+      cartShow: !cartShow,
+    });
+  };
   return (
-    <div className='cart'>
+    <motion.div
+      initial={{ opacity: 0, x: 200 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 200 }}
+      className='cart'
+    >
       <div className='cart-header'>
-        <motion.p className='cart-header-icon' whileTap={{ scale: 0.75 }}>
+        <motion.p
+          className='cart-header-icon'
+          whileTap={{ scale: 0.75 }}
+          onClick={showCart}
+        >
           <BsArrowLeft />
         </motion.p>
         <p>Cart</p>
@@ -22,93 +41,30 @@ const Cart = () => {
       </div>
 
       <div className='order-items-container'>
-        <div className='order-items'>
-          <div className='order-img'>
-            <img src={orderImage} alt='order-image' />
-          </div>
+        {cartItems &&
+          cartItems.map((item) => (
+            <div className='order-items' key={item.id}>
+              <div className='order-img'>
+                <img src={item.imageURL} alt={item.title} />
+              </div>
 
-          <div className='order-details'>
-            <div className='order-title'>
-              <h1>ice cream</h1>
-              <p>$20.00</p>
+              <div className='order-details'>
+                <div className='order-title'>
+                  <h1>{item.title}</h1>
+                  <p>${item.price}.00</p>
+                </div>
+                <div className='order-quantity'>
+                  <motion.p whileTap={{ scale: 0.75 }}>
+                    <BiMinus />
+                  </motion.p>
+                  <p className='order-count'>1</p>
+                  <motion.p whileTap={{ scale: 0.75 }}>
+                    <BiPlus />
+                  </motion.p>
+                </div>
+              </div>
             </div>
-            <div className='order-quantity'>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiMinus />
-              </motion.p>
-              <p className='order-count'>1</p>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiPlus />
-              </motion.p>
-            </div>
-          </div>
-        </div>
-
-        <div className='order-items'>
-          <div className='order-img'>
-            <img src={orderImage} alt='order-image' />
-          </div>
-
-          <div className='order-details'>
-            <div className='order-title'>
-              <h1>ice cream</h1>
-              <p>$20.00</p>
-            </div>
-            <div className='order-quantity'>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiMinus />
-              </motion.p>
-              <p className='order-count'>1</p>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiPlus />
-              </motion.p>
-            </div>
-          </div>
-        </div>
-
-        <div className='order-items'>
-          <div className='order-img'>
-            <img src={orderImage} alt='order-image' />
-          </div>
-
-          <div className='order-details'>
-            <div className='order-title'>
-              <h1>ice cream</h1>
-              <p>$20.00</p>
-            </div>
-            <div className='order-quantity'>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiMinus />
-              </motion.p>
-              <p className='order-count'>1</p>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiPlus />
-              </motion.p>
-            </div>
-          </div>
-        </div>
-
-        <div className='order-items'>
-          <div className='order-img'>
-            <img src={orderImage} alt='order-image' />
-          </div>
-
-          <div className='order-details'>
-            <div className='order-title'>
-              <h1>ice cream</h1>
-              <p>$20.00</p>
-            </div>
-            <div className='order-quantity'>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiMinus />
-              </motion.p>
-              <p className='order-count'>1</p>
-              <motion.p whileTap={{ scale: 0.75 }}>
-                <BiPlus />
-              </motion.p>
-            </div>
-          </div>
-        </div>
+          ))}
       </div>
 
       <div className='total-container'>
@@ -131,7 +87,7 @@ const Cart = () => {
           <button type='button'>Check Out</button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
