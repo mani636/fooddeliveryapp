@@ -1,0 +1,23 @@
+.row-2 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+
+.row-2 .section {
+  flex: 1;
+}
+
+.row-2 .section ul {
+  width: 100%;
+}
+
+.row-2 .section ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}

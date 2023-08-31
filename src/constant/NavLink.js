@@ -19,10 +19,6 @@ const links = [
     id: 5,
     link: 'Review',
   },
-  {
-    id: 6,
-    link: 'Order',
-  },
 ];
 
 export { links };

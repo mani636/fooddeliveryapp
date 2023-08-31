@@ -3,7 +3,6 @@ import { BiMinus, BiPlus } from 'react-icons/bi';
 import { MdOutlineClear } from 'react-icons/md';
 import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
-import orderImage from '../../assets/cake.jpg';
 import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 
@@ -16,6 +15,14 @@ const Cart = () => {
       cartShow: !cartShow,
     });
   };
+
+  const clearCart = () => {
+    dispatch({
+      type: actionType.SET_CART_ITEMS,
+      cartItems: [],
+    });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 200 }}
@@ -32,7 +39,11 @@ const Cart = () => {
           <BsArrowLeft />
         </motion.p>
         <p>Cart</p>
-        <motion.p className='cart-clear-btn' whileTap={{ scale: 0.75 }}>
+        <motion.p
+          className='cart-clear-btn'
+          whileTap={{ scale: 0.75 }}
+          onClick={clearCart}
+        >
           Clear
           <span>
             <MdOutlineClear />
