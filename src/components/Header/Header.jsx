@@ -15,7 +15,7 @@ import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 
 const Header = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, cartItems }, dispatch] = useStateValue();
 
   const [isMenu, setIsMenu] = useState(false);
 
@@ -47,19 +47,15 @@ const Header = () => {
   return (
     <nav>
       <div className='logo'>
-        <Link to='/'>
+        <Link>
           <img src={Logo} alt='logo' />
         </Link>
       </div>
 
       <div className='nav-link-container'>
         <ul>
-          {links.map(({ id, link, url }) => {
-            return (
-              <li key={id}>
-                <Link to={url}>{link}</Link>
-              </li>
-            );
+          {links.map(({ id, link }) => {
+            return <li key={id}>{link}</li>;
           })}
         </ul>
 
@@ -67,7 +63,9 @@ const Header = () => {
           <Link>
             <CgShoppingCart />
           </Link>
-          <p className='product-quantity'>0</p>
+          {cartItems && cartItems.length > 0 && (
+            <p className='product-quantity'>{cartItems.length}</p>
+          )}
         </div>
 
         <div className='profile-container'>

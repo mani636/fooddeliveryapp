@@ -28,15 +28,16 @@ nav ul li {
   margin: 0 15px;
 }
 
-nav ul li a {
+nav ul li {
   text-decoration: none;
   color: #000;
   font-weight: 500;
   font-size: 17px;
   transition: 0.1s;
+  cursor: pointer;
 }
 
-nav ul li a::after {
+nav ul li::after {
   content: '';
   width: 0;
   height: 2px;
@@ -45,11 +46,11 @@ nav ul li a::after {
   transition: 0.2s linear;
 }
 
-nav ul li a:hover::after {
+nav ul li:hover::after {
   width: 100%;
 }
 
-nav ul li a:hover {
+nav ul li:hover {
   color: #fac031;
 }
 
