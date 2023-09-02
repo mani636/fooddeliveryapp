@@ -51,6 +51,11 @@
   margin-top: 3px;
 }
 
+.order {
+  width: 100%;
+  height: 100%;
+}
+
 .order-items-container {
   width: 100%;
   height: 350px;
@@ -195,4 +200,23 @@
   border: 2px solid rgb(12, 12, 12);
   background-color: #fac031;
   cursor: pointer;
+}
+
+.cart-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+}
+
+.cart-empty img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.cart-empty p {
+  font-size: 1.25rem;
+  font-weight: bold;
 }

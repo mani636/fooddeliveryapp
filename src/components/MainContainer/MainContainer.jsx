@@ -17,7 +17,7 @@ const MainContainer = () => {
       <About />
       <Menu />
       <Gallery />
-      {/* <Review /> */}
+      <Review />
       <Footer />
       {cartShow && <Cart />}
     </div>

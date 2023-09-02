@@ -7,7 +7,7 @@ import { reviews } from '../../constant/data';
 
 const Review = () => {
   return (
-    <div className='review'>
+    <div className='review' name='Review'>
       <h1>
         Customer <span>Review</span>
       </h1>

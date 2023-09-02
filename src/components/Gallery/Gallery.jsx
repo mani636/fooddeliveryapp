@@ -28,7 +28,7 @@ const Gallery = () => {
   }, [items]);
 
   return (
-    <div className='gallery'>
+    <div className='gallery' name='Gallery'>
       <h1>
         Our <span>Gallery</span>
       </h1>

@@ -5,9 +5,11 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
+import cartEmpty from '../../assets/empty-cart.webp';
+import { useEffect } from 'react';
 
 const Cart = () => {
-  const [{ cartShow, cartItems }, dispatch] = useStateValue();
+  const [{ cartShow, cartItems, subTotal }, dispatch] = useStateValue();
 
   const showCart = () => {
     dispatch({
@@ -22,6 +24,26 @@ const Cart = () => {
       cartItems: [],
     });
   };
+
+  const increaseItem = (id) => {
+    dispatch({
+      type: actionType.SET_INCREASE_ITEM,
+      payload: { id: id },
+    });
+  };
+
+  const decreaseItem = (id) => {
+    dispatch({
+      type: actionType.SET_DECREASE_ITEM,
+      payload: { id: id },
+    });
+  };
+
+  useEffect(() => {
+    dispatch({
+      type: actionType.SET_UPDATE_TOTAL,
+    });
+  }, [cartItems]);
 
   return (
     <motion.div
@@ -51,53 +73,68 @@ const Cart = () => {
         </motion.p>
       </div>
 
-      <div className='order-items-container'>
-        {cartItems &&
-          cartItems.map((item) => (
-            <div className='order-items' key={item.id}>
-              <div className='order-img'>
-                <img src={item.imageURL} alt={item.title} />
-              </div>
+      {cartItems && cartItems.length > 0 ? (
+        <div className='order'>
+          <div className='order-items-container'>
+            {cartItems &&
+              cartItems.map((item) => (
+                <div className='order-items' key={item.id}>
+                  <div className='order-img'>
+                    <img src={item.imageURL} alt={item.title} />
+                  </div>
 
-              <div className='order-details'>
-                <div className='order-title'>
-                  <h1>{item.title}</h1>
-                  <p>${item.price}.00</p>
+                  <div className='order-details'>
+                    <div className='order-title'>
+                      <h1>{item.title}</h1>
+                      <p>${item.price}.00</p>
+                    </div>
+                    <div className='order-quantity'>
+                      <motion.p
+                        whileTap={{ scale: 0.75 }}
+                        onClick={() => decreaseItem(item.id)}
+                      >
+                        <BiMinus />
+                      </motion.p>
+                      <p className='order-count'>{item.quantity}</p>
+                      <motion.p
+                        whileTap={{ scale: 0.75 }}
+                        onClick={() => increaseItem(item.id)}
+                      >
+                        <BiPlus />
+                      </motion.p>
+                    </div>
+                  </div>
                 </div>
-                <div className='order-quantity'>
-                  <motion.p whileTap={{ scale: 0.75 }}>
-                    <BiMinus />
-                  </motion.p>
-                  <p className='order-count'>1</p>
-                  <motion.p whileTap={{ scale: 0.75 }}>
-                    <BiPlus />
-                  </motion.p>
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
-
-      <div className='total-container'>
-        <div className='sub-total'>
-          <p>Sub Total</p>
-          <p>$20.00</p>
-        </div>
-
-        <div className='delivery-fees'>
-          <p>Delivery</p>
-          <p>$5.00</p>
-        </div>
-
-        <div className='total-amount-container'>
-          <div className='total'>
-            <p>Total</p>
-            <p>$30.00</p>
+              ))}
           </div>
 
-          <button type='button'>Check Out</button>
+          <div className='total-container'>
+            <div className='sub-total'>
+              <p>Sub Total</p>
+              <p>${subTotal}</p>
+            </div>
+
+            <div className='delivery-fees'>
+              <p>Delivery</p>
+              <p>$5.00</p>
+            </div>
+
+            <div className='total-amount-container'>
+              <div className='total'>
+                <p>Total</p>
+                <p>${5 + subTotal}</p>
+              </div>
+
+              <button type='button'>Check Out</button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className='cart-empty'>
+          <img src={cartEmpty} alt='cart-empty' />
+          <p>Add some items to your cart</p>
+        </div>
+      )}
     </motion.div>
   );
 };

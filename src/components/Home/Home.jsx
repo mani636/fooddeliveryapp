@@ -4,7 +4,7 @@ import { MdKeyboardArrowRight } from 'react-icons/md';
 
 const Home = () => {
   return (
-    <div className='home'>
+    <div className='home' name='Home'>
       <div className='men-text'>
         <h1>
           Get Fresh <span>Food</span>

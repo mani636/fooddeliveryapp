@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import NavLink from './component/NavLink';
 import './Header.css';
 import Logo from '../../assets/logo.png';
-import { links } from '../../constant/NavLink';
 import { Link } from 'react-router-dom';
 import Avatar from '../../assets/download.jpg';
 
@@ -60,12 +60,7 @@ const Header = () => {
       </div>
 
       <div className='nav-link-container'>
-        <ul>
-          {links.map(({ id, link }) => {
-            return <li key={id}>{link}</li>;
-          })}
-        </ul>
-
+        <NavLink />
         <div className='icon' onClick={showCart}>
           <Link>
             <CgShoppingCart />

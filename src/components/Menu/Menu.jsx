@@ -29,7 +29,7 @@ const Menu = () => {
   }, [items]);
 
   return (
-    <div className='menu'>
+    <div className='menu' name='Menu'>
       <h1>
         Our <span>Menu</span>
       </h1>

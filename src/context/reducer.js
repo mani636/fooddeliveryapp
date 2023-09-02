@@ -3,6 +3,9 @@ export const actionType = {
   SET_FOOD_ITEMS: 'SET_FOOD_ITEMS',
   SET_CART_SHOW: 'SET_CART_SHOW',
   SET_CART_ITEMS: 'SET_CART_ITEMS',
+  SET_INCREASE_ITEM: 'SET_INCREASE_ITEM',
+  SET_DECREASE_ITEM: 'SET_DECREASE_ITEM',
+  SET_UPDATE_TOTAL: 'SET_UPDATE_TOTAL',
 };
 
 export const reducer = (state, action) => {
@@ -30,6 +33,44 @@ export const reducer = (state, action) => {
         ...state,
         cartItems: action.cartItems,
       };
+
+    case actionType.SET_INCREASE_ITEM:
+      const increasedCart = state.cartItems.map((item) => {
+        if (item.id === action.payload.id) {
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+        } else {
+          return item;
+        }
+      });
+      return {
+        ...state,
+        cartItems: increasedCart,
+      };
+
+    case actionType.SET_DECREASE_ITEM:
+      const decreasedCart = state.cartItems
+        .map((item) => {
+          if (item.id === action.payload.id) {
+            return { ...item, quantity: item.quantity - 1 };
+          } else {
+            return item;
+          }
+        })
+        .filter((item) => item.quantity > 0);
+      return {
+        ...state,
+        cartItems: decreasedCart,
+      };
+
+    case actionType.SET_UPDATE_TOTAL:
+      const updatePrice = state.cartItems.reduce((pre, curr) => {
+        const amount = curr.quantity * curr.price;
+        return pre + amount;
+      }, 0);
+      return { ...state, subTotal: updatePrice };
 
     default:
       return state;
