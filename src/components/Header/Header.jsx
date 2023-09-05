@@ -2,7 +2,7 @@ import { useState } from 'react';
 import NavLink from './component/NavLink';
 import './Header.css';
 import Logo from '../../assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Avatar from '../../assets/download.jpg';
 
 import { CgShoppingCart } from 'react-icons/cg';
@@ -90,6 +90,12 @@ const Header = () => {
                 </p>
               </Link>
             )}
+            <Link to='/profile'>
+              <p>
+                Profile
+                <MdAdd />
+              </p>
+            </Link>
             <p onClick={logout}>
               Logout
               <MdLogout />

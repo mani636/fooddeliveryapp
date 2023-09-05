@@ -3,6 +3,7 @@ import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { useStateValue } from '../../context/StateProvider';
 import { useEffect, useState } from 'react';
 import { actionType } from '../../context/reducer';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Menu = () => {
   const [{ foodItems, cartItems }, dispatch] = useStateValue();

@@ -7,6 +7,7 @@ import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 import cartEmpty from '../../assets/empty-cart.webp';
 import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Cart = () => {
   const [{ cartShow, cartItems, subTotal }, dispatch] = useStateValue();

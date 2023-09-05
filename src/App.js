@@ -5,10 +5,14 @@ import { useStateValue } from './context/StateProvider';
 import { getAllFoodItems } from './utils/firebaseFunction';
 import { useEffect } from 'react';
 import { actionType } from './context/reducer';
+import { Routes, Route } from 'react-router-dom';
 import './index.css';
+import SignUp from './pages/SignUp/SignUp';
+import Login from './pages/Login/Login';
+import Profile from './pages/Profile/Profile';
 
 const App = () => {
-  const [{ foodItems }, dispatch] = useStateValue();
+  const [{ foodItems, isLogin }, dispatch] = useStateValue();
 
   const fetchData = async () => {
     await getAllFoodItems().then((data) => {
@@ -25,12 +29,25 @@ const App = () => {
 
   return (
     <AnimatePresence>
-      <div className='main'>
-        <Header />
-        <main className='main-container'>
-          <MainContainer />
-        </main>
-      </div>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            isLogin ? (
+              <div className='main'>
+                <Header />
+                <main className='main-container'>
+                  <MainContainer />
+                </main>
+              </div>
+            ) : (
+              <SignUp />
+            )
+          }
+        ></Route>
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/login' element={<Login />} />
+      </Routes>
     </AnimatePresence>
   );
 };
