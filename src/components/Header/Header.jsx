@@ -2,15 +2,13 @@ import { useState } from 'react';
 import NavLink from './component/NavLink';
 import './Header.css';
 import Logo from '../../assets/logo.png';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '../../assets/download.jpg';
 
 import { CgShoppingCart } from 'react-icons/cg';
 import { MdAdd, MdLogout } from 'react-icons/md';
 import { motion } from 'framer-motion';
 
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../../firebase/firebase.config';
 import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 
@@ -26,20 +24,8 @@ const Header = () => {
     });
   };
 
-  const login = async () => {
-    if (!user) {
-      const {
-        user: { refreshToken, providerData },
-      } = await signInWithPopup(auth, provider);
-      dispatch({
-        type: actionType.SET_USER,
-        user: providerData[0],
-      });
-
-      localStorage.setItem('user', JSON.stringify(providerData[0]));
-    } else {
-      setIsMenu(!isMenu);
-    }
+  const clickHandler = () => {
+    setIsMenu(!isMenu);
   };
 
   const logout = () => {
@@ -73,9 +59,9 @@ const Header = () => {
         <div className='profile-container'>
           <motion.img
             whileTap={{ scale: 0.6 }}
-            src={user ? user.photoURL : Avatar}
+            src={user && user.photoURL !== 'null' ? user.photoURL : Avatar}
             alt='user-profile'
-            onClick={login}
+            onClick={clickHandler}
             className='profile-img'
           />
         </div>

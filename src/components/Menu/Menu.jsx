@@ -6,7 +6,8 @@ import { actionType } from '../../context/reducer';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Menu = () => {
-  const [{ foodItems, cartItems }, dispatch] = useStateValue();
+  const [{ foodItems, cartItems, isLogin }, dispatch] = useStateValue();
+
   const [items, setItems] = useState([]);
   const [data, setData] = useState(foodItems);
 
@@ -23,6 +24,8 @@ const Menu = () => {
     setData(
       foodItems && foodItems.filter((item) => item.category !== 'gallery')
     );
+
+    localStorage.setItem('isLogin', JSON.stringify(isLogin));
   }, [foodItems]);
 
   useEffect(() => {

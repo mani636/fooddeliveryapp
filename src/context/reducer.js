@@ -15,6 +15,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         user: action.user,
+        isLogin: action.isLogin,
       };
 
     case actionType.SET_FOOD_ITEMS:

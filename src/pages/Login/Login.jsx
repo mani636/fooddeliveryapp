@@ -3,11 +3,7 @@ import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { useStateValue } from '../../context/StateProvider';
-import {
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../firebase/firebase.config';
 import { actionType } from '../../context/reducer';
 
@@ -18,28 +14,22 @@ const Login = () => {
   const [{ user, isLogin }, dispatch] = useStateValue();
 
   const loginWithGoogle = async () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-
-        const token = credential.accessToken;
-        const user = result.user;
-
+    await signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        const response = userCredential.user;
         dispatch({
-          type: actionType.SET_IS_LOGIN,
+          type: actionType.SET_USER,
+          user: response.providerData[0],
           isLogin: !isLogin,
         });
+
+        localStorage.setItem('user', JSON.stringify(response.providerData[0]));
+
         navigate('/');
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+        console.log(error.Message);
+        console.log(error.Code);
       });
   };
 
@@ -47,17 +37,20 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+
         dispatch({
-          type: actionType.SET_IS_LOGIN,
+          type: actionType.SET_USER,
+          user: user.providerData,
           isLogin: !isLogin,
         });
+
+        localStorage.setItem('user', JSON.stringify(user.providerData[0]));
+
         navigate('/');
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        console.log(error.code);
+        console.log(error.message);
       });
   };
 

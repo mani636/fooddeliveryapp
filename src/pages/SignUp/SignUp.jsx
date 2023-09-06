@@ -9,7 +9,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [lastName, setLastName] = useState('');
   const [name, setName] = useState('');
 
   const clickHandler = (e) => {
@@ -27,21 +27,24 @@ const SignUp = () => {
         addDoc(collectionRef, {
           id: user.uid,
           name: name,
+          lastName: lastName,
+          image: 'NULL',
           email: user.email,
+          gander: 'NULL',
+          age: 'NULL',
+          phoneNo: 'NULL',
         });
 
         setName('');
         setEmail('');
         setPassword('');
-        setConfirmPassword('');
+        setLastName('');
         navigate('/login');
       })
 
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        console.log(errorCode);
+        console.log(error.Message);
+        console.log(error.Code);
       });
   };
 
@@ -61,6 +64,17 @@ const SignUp = () => {
           />
         </div>
         <div className='user-input-container'>
+          <label htmlFor='last name'>Last Name</label>
+          <input
+            type='text'
+            id='last name'
+            placeholder='Enter your last name'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </div>
+        <div className='user-input-container'>
           <label htmlFor='email'>Email Address</label>
           <input
             type='email'
@@ -76,20 +90,9 @@ const SignUp = () => {
           <input
             type='password'
             id='password'
-            placeholder='password'
+            placeholder='Enter your password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className='user-input-container'>
-          <label htmlFor='confirm-password'>Confirm Password</label>
-          <input
-            type='password'
-            id='confirm-password'
-            placeholder='confirm password'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </div>

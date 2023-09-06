@@ -15,3 +15,12 @@ export const fetchCart = () => {
 
   return cartInfo ? cartInfo : [];
 };
+
+export const fetchLoginInfo = () => {
+  const loginInfo =
+    localStorage.getItem('isLogin') !== 'undefined'
+      ? JSON.parse(localStorage.getItem('isLogin'))
+      : localStorage.clear();
+
+  return loginInfo;
+};

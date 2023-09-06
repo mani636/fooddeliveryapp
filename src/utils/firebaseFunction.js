@@ -11,3 +11,10 @@ export const getAllFoodItems = async () => {
 
   return items.docs.map((doc) => doc.data());
 };
+
+// get profile information
+// export const getUserInfo = async () => {
+//   const users = await getDocs(query(collection(firestore, 'users')));
+
+//   return users.docs.map((doc) => doc.data());
+// };
