@@ -15,4 +15,5 @@ export const initialState = {
   cartItems: cartInfo,
   subTotal: 0,
   isLogin: loginInfo,
+  userDetails: null,
 };

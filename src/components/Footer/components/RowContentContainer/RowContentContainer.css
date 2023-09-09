@@ -21,3 +21,8 @@
   width: 100%;
   margin-bottom: 0.5rem;
 }
+
+.row-2 .section ul li a {
+  color: black;
+  font-size: 1.25rem;
+}

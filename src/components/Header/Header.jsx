@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import NavLink from './component/NavLink';
+import NavLinks from './component/NavLinks';
 import './Header.css';
 import Logo from '../../assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-scroll';
+import { NavLink } from 'react-router-dom';
 import Avatar from '../../assets/download.jpg';
 
 import { CgShoppingCart } from 'react-icons/cg';
@@ -40,13 +41,13 @@ const Header = () => {
   return (
     <nav>
       <div className='logo'>
-        <Link>
+        <Link to='home' smooth duration={500}>
           <img src={Logo} alt='logo' />
         </Link>
       </div>
 
       <div className='nav-link-container'>
-        <NavLink />
+        <NavLinks />
         <div className='icon' onClick={showCart}>
           <Link>
             <CgShoppingCart />
@@ -59,7 +60,7 @@ const Header = () => {
         <div className='profile-container'>
           <motion.img
             whileTap={{ scale: 0.6 }}
-            src={user && user.photoURL !== 'null' ? user.photoURL : Avatar}
+            src={user && Avatar}
             alt='user-profile'
             onClick={clickHandler}
             className='profile-img'
@@ -68,21 +69,13 @@ const Header = () => {
 
         {isMenu && (
           <div className='user-drop-menu'>
-            {user && user.email === 'manikandanraj817@gmail.com' && (
-              <Link to='/createItem'>
-                <p>
-                  New Item
-                  <MdAdd />
-                </p>
-              </Link>
-            )}
-            <Link to='/profile'>
+            <NavLink to='/profile'>
               <p>
                 Profile
                 <MdAdd />
               </p>
-            </Link>
-            <p onClick={logout}>
+            </NavLink>
+            <p onClick={logout} className='logout'>
               Logout
               <MdLogout />
             </p>

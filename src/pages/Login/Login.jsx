@@ -4,12 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { useStateValue } from '../../context/StateProvider';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../../firebase/firebase.config';
+import { auth, provider, firestore } from '../../firebase/firebase.config';
 import { actionType } from '../../context/reducer';
+import { addDoc, collection } from 'firebase/firestore';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isShowLogin, setIsShowLogin] = useState(false);
   const navigate = useNavigate();
   const [{ user, isLogin }, dispatch] = useStateValue();
 
@@ -17,6 +19,18 @@ const Login = () => {
     await signInWithPopup(auth, provider)
       .then((userCredential) => {
         const response = userCredential.user;
+
+        // addDoc(collection(firestore, 'users'), {
+        //   id: user.uid,
+        //   firstName: 'NULL',
+        //   lastName: 'NULL',
+        //   image: 'NULL',
+        //   email: user.email,
+        //   gander: 'NULL',
+        //   age: 'NULL',
+        //   phoneNo: 'NULL',
+        // });
+
         dispatch({
           type: actionType.SET_USER,
           user: response.providerData[0],
@@ -54,6 +68,10 @@ const Login = () => {
       });
   };
 
+  const showTestLogin = () => {
+    setIsShowLogin(!isShowLogin);
+  };
+
   return (
     <div className='login'>
       <form className='login-container'>
@@ -84,6 +102,21 @@ const Login = () => {
         <button type='button' className='login-btn' onClick={login}>
           Login
         </button>
+        <div className='login-test-credential-btn'>
+          <button
+            type='button'
+            className='login-credential-btn'
+            onClick={showTestLogin}
+          >
+            Test Credentials
+          </button>
+          {isShowLogin && (
+            <div>
+              <p>Email: test@gmail.com</p>
+              <p>Password: test@123</p>
+            </div>
+          )}
+        </div>
 
         <div className='login-with-google'>
           <span>or with signin</span>

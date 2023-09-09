@@ -3,13 +3,30 @@ import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { useStateValue } from '../../context/StateProvider';
 import { useEffect, useState } from 'react';
 import { actionType } from '../../context/reducer';
-import { ToastContainer, toast } from 'react-toastify';
+
+// notification
+import { toast } from 'react-toastify';
 
 const Menu = () => {
   const [{ foodItems, cartItems, isLogin }, dispatch] = useStateValue();
 
   const [items, setItems] = useState([]);
   const [data, setData] = useState(foodItems);
+
+  const clickOrder = (item) => {
+    setItems([...cartItems, item]);
+
+    toast.success('Successfully Add To Cart', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  };
 
   const addToCart = () => {
     dispatch({
@@ -58,10 +75,7 @@ const Menu = () => {
                 </div>
 
                 <div className='menu-btn'>
-                  <button
-                    type='button'
-                    onClick={() => setItems([...cartItems, item])}
-                  >
+                  <button type='button' onClick={() => clickOrder(item)}>
                     Order Now
                   </button>
                 </div>

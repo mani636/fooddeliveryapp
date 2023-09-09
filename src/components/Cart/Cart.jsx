@@ -7,7 +7,7 @@ import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 import cartEmpty from '../../assets/empty-cart.webp';
 import { useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
   const [{ cartShow, cartItems, subTotal }, dispatch] = useStateValue();
@@ -24,6 +24,17 @@ const Cart = () => {
       type: actionType.SET_CART_ITEMS,
       cartItems: [],
     });
+    toast.success('Successfully Clear Cart');
+  };
+
+  const checkOut = () => {
+    dispatch({
+      type: actionType.SET_CHECKOUT,
+      cartItems: [],
+      cartShow: !cartShow,
+    });
+
+    toast.success('order has been placed');
   };
 
   const increaseItem = (id) => {
@@ -38,6 +49,7 @@ const Cart = () => {
       type: actionType.SET_DECREASE_ITEM,
       payload: { id: id },
     });
+    toast.success('Successfully removed from Cart');
   };
 
   useEffect(() => {
@@ -126,7 +138,9 @@ const Cart = () => {
                 <p>${5 + subTotal}</p>
               </div>
 
-              <button type='button'>Check Out</button>
+              <button type='button' onClick={checkOut}>
+                Check Out
+              </button>
             </div>
           </div>
         </div>

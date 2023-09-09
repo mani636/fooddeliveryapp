@@ -10,7 +10,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [lastName, setLastName] = useState('');
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
 
   const clickHandler = (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const SignUp = () => {
 
         addDoc(collectionRef, {
           id: user.uid,
-          name: name,
+          firstName: firstName,
           lastName: lastName,
           image: 'NULL',
           email: user.email,
@@ -35,7 +35,7 @@ const SignUp = () => {
           phoneNo: 'NULL',
         });
 
-        setName('');
+        setFirstName('');
         setEmail('');
         setPassword('');
         setLastName('');
@@ -53,14 +53,14 @@ const SignUp = () => {
       <form className='form'>
         <h2>SIGN UP</h2>
         <div className='user-input-container'>
-          <label htmlFor='name'>Full Name</label>
+          <label htmlFor='name'>Fist Name</label>
           <input
             type='text'
             id='name'
             placeholder='Enter your name'
             required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
         <div className='user-input-container'>

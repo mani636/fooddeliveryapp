@@ -114,11 +114,17 @@ nav .icon a:hover {
   top: 60px;
   right: 80px;
   display: flex;
+  padding: 0.5rem;
   justify-content: center;
   flex-direction: column;
   background-color: #fcfdff;
   border-radius: 3px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.user-drop-menu a {
+  text-decoration: none;
+  color: #000;
 }
 
 .user-drop-menu p {
@@ -132,4 +138,10 @@ nav .icon a:hover {
 .user-drop-menu p:hover {
   color: #fac031;
   cursor: pointer;
+}
+
+.logout {
+  padding: 0.25rem;
+  background-color: rgb(238, 237, 237);
+  color: #000;
 }

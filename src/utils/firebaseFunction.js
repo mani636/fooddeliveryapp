@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 import { firestore } from '../firebase/firebase.config';
 
@@ -13,8 +13,8 @@ export const getAllFoodItems = async () => {
 };
 
 // get profile information
-// export const getUserInfo = async () => {
-//   const users = await getDocs(query(collection(firestore, 'users')));
+export const getUserInfo = async () => {
+  const users = await getDocs(query(collection(firestore, 'users')));
 
-//   return users.docs.map((doc) => doc.data());
-// };
+  return users.docs.map((doc) => doc.data());
+};

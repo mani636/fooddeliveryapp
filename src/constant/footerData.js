@@ -1,8 +1,4 @@
-import {
-  AiFillInstagram,
-  AiOutlineTwitter,
-  AiFillFacebook,
-} from 'react-icons/ai';
+import { AiOutlineTwitter, AiFillGithub, AiFillLinkedin } from 'react-icons/ai';
 
 export const states = [
   {
@@ -30,15 +26,18 @@ export const states = [
 export const socialLinks = [
   {
     id: 1,
-    link: <AiFillInstagram />,
+    link: <AiFillGithub />,
+    URL: 'https://github.com/mani636',
   },
   {
     id: 2,
     link: <AiOutlineTwitter />,
+    URL: 'https://twitter.com/Manikandan11631',
   },
   {
     id: 3,
-    link: <AiFillFacebook />,
+    link: <AiFillLinkedin />,
+    URL: 'http://www.linkedin.com/in/manikandan-raj-3404bb258',
   },
 ];
 

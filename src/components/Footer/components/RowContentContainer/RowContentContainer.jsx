@@ -1,6 +1,5 @@
 import './RowContentContainer.css';
-import { BsFacebook, BsTwitter } from 'react-icons/bs';
-import { PiInstagramLogoFill } from 'react-icons/pi';
+import { socialLinks } from '../../../../constant/footerData';
 
 const RowContentContainer = () => {
   return (
@@ -32,17 +31,15 @@ const RowContentContainer = () => {
       </div>
 
       <div className='section'>
-        <ul>
-          <li>
-            <BsFacebook />
-          </li>
-          <li>
-            <PiInstagramLogoFill />
-          </li>
-          <li>
-            <BsTwitter />
-          </li>
-        </ul>
+        {socialLinks.map(({ id, link, URL }) => {
+          return (
+            <ul key={id}>
+              <li>
+                <a href={URL}>{link}</a>
+              </li>
+            </ul>
+          );
+        })}
       </div>
     </div>
   );

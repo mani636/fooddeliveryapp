@@ -2,7 +2,7 @@ import Header from './components/Header/Header';
 import { AnimatePresence } from 'framer-motion';
 import MainContainer from './components/MainContainer/MainContainer';
 import { useStateValue } from './context/StateProvider';
-import { getAllFoodItems } from './utils/firebaseFunction';
+import { getAllFoodItems, getUserInfo } from './utils/firebaseFunction';
 import { useEffect } from 'react';
 import { actionType } from './context/reducer';
 import { Routes, Route } from 'react-router-dom';
@@ -12,7 +12,7 @@ import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 
 const App = () => {
-  const [{ foodItems, isLogin }, dispatch] = useStateValue();
+  const [{ foodItems, userDetails, isLogin }, dispatch] = useStateValue();
 
   const fetchData = async () => {
     await getAllFoodItems().then((data) => {
@@ -22,6 +22,19 @@ const App = () => {
       });
     });
   };
+
+  const userInfoDetails = async () => {
+    await getUserInfo().then((data) => {
+      dispatch({
+        type: actionType.SET_USER_DETAILS,
+        userDetails: data,
+      });
+    });
+  };
+
+  useEffect(() => {
+    userInfoDetails();
+  }, []);
 
   useEffect(() => {
     fetchData();

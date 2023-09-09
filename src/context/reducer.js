@@ -2,11 +2,12 @@ export const actionType = {
   SET_USER: 'SET_USER',
   SET_FOOD_ITEMS: 'SET_FOOD_ITEMS',
   SET_CART_SHOW: 'SET_CART_SHOW',
+  SET_CHECKOUT: 'SET_CHECKOUT',
   SET_CART_ITEMS: 'SET_CART_ITEMS',
   SET_INCREASE_ITEM: 'SET_INCREASE_ITEM',
   SET_DECREASE_ITEM: 'SET_DECREASE_ITEM',
   SET_UPDATE_TOTAL: 'SET_UPDATE_TOTAL',
-  SET_IS_LOGIN: 'SET_IS_LOGIN',
+  SET_USER_DETAILS: 'SET_USER_DETAILS',
 };
 
 export const reducer = (state, action) => {
@@ -30,10 +31,17 @@ export const reducer = (state, action) => {
         cartShow: action.cartShow,
       };
 
-    case actionType.SET_IS_LOGIN:
+    case actionType.SET_CHECKOUT:
       return {
         ...state,
-        isLogin: action.isLogin,
+        cartShow: action.cartShow,
+        cartItems: action.cartItems,
+      };
+
+    case actionType.SET_USER_DETAILS:
+      return {
+        ...state,
+        userDetails: action.userDetails,
       };
 
     case actionType.SET_CART_ITEMS:
