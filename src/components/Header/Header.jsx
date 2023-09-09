@@ -49,9 +49,9 @@ const Header = () => {
       <div className='nav-link-container'>
         <NavLinks />
         <div className='icon' onClick={showCart}>
-          <Link>
+          <NavLink>
             <CgShoppingCart />
-          </Link>
+          </NavLink>
           {cartItems && cartItems.length > 0 && (
             <p className='product-quantity'>{cartItems.length}</p>
           )}
