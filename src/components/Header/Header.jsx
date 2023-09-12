@@ -13,6 +13,9 @@ import { motion } from 'framer-motion';
 import { useStateValue } from '../../context/StateProvider';
 import { actionType } from '../../context/reducer';
 
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase/firebase.config';
+
 const Header = () => {
   const [{ user, cartItems, cartShow }, dispatch] = useStateValue();
 
@@ -36,6 +39,13 @@ const Header = () => {
       type: actionType.SET_USER,
       user: null,
     });
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   return (

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './Profile.css';
-import userImage from '../../assets/chef1.png';
 import { BiSolidPencil } from 'react-icons/bi';
 import { useStateValue } from '../../context/StateProvider';
+import { doc, updateDoc } from 'firebase/firestore';
+import { firestore } from '../../firebase/firebase.config';
+import { getUserInfo } from '../../utils/firebaseFunction';
+import { actionType } from '../../context/reducer';
 
 const Profile = () => {
-  const [{ userDetails, user }] = useStateValue();
-  const [imageValue, setImageValue] = useState('Upload new picture');
+  const [{ userDetails, user, dispatch }] = useStateValue();
 
   const [data, setData] = useState();
   const [loginUserEmail, setLoginUserEmail] = useState(user.email);
@@ -19,18 +21,14 @@ const Profile = () => {
   const [phoneNo, setPhoneNo] = useState();
   const [age, setAge] = useState();
   const [gander, setGander] = useState();
+  const [modifiedField, setModifiedField] = useState({});
 
   const userProfile = () => {
-    const filterUser = userDetails.find(
-      (user) => user.email === loginUserEmail
-    );
-
     console.log(userDetails);
-    console.log(user.email);
+    const filterUser =
+      userDetails && userDetails.find((user) => user.email === loginUserEmail);
 
-    console.log(filterUser);
-
-    if (filterUser) {
+    if (userDetails && filterUser) {
       setId(filterUser.id);
       setEmail(filterUser.email);
       setFirstName(filterUser.firstName);
@@ -44,8 +42,46 @@ const Profile = () => {
 
   useEffect(() => {
     userProfile();
-    userProfile();
-  }, [userDetails]);
+  }, []);
+
+  const userInfoDetails = async () => {
+    await getUserInfo().then((data) => {
+      dispatch({
+        type: actionType.SET_USER_DETAILS,
+        userDetails: data,
+      });
+    });
+  };
+
+  const updatedUserProfile = async () => {
+    const documentRef = doc(firestore, 'users', id);
+    try {
+      await updateDoc(documentRef, {
+        id,
+        firstName,
+        lastName,
+        // image,
+        email,
+        gander,
+        age,
+        phoneNo,
+      });
+
+      // userInfoDetails();
+      console.log(
+        id,
+        firstName,
+        lastName,
+
+        email,
+        gander,
+        age,
+        phoneNo
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className='profile'>
@@ -144,7 +180,9 @@ const Profile = () => {
           </div>
         </div>
 
-        <button className='profile-update-btn'>Save</button>
+        <button className='profile-update-btn' onClick={updatedUserProfile}>
+          Save
+        </button>
       </div>
     </div>
   );

@@ -11,33 +11,36 @@ import SignUp from './pages/SignUp/SignUp';
 import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase/firebase.config';
+
 const App = () => {
   const [{ foodItems, userDetails, isLogin }, dispatch] = useStateValue();
-
-  const fetchData = async () => {
-    await getAllFoodItems().then((data) => {
-      dispatch({
-        type: actionType.SET_FOOD_ITEMS,
-        foodItems: data,
-      });
-    });
-  };
-
-  const userInfoDetails = async () => {
-    await getUserInfo().then((data) => {
-      dispatch({
-        type: actionType.SET_USER_DETAILS,
-        userDetails: data,
-      });
-    });
-  };
-
   useEffect(() => {
-    userInfoDetails();
+    const fetchData = async () => {
+      await getAllFoodItems().then((data) => {
+        dispatch({
+          type: actionType.SET_FOOD_ITEMS,
+          foodItems: data,
+        });
+      });
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
-    fetchData();
+    onAuthStateChanged(auth, (user) => {
+      const userInfoDetails = async () => {
+        const data = await getUserInfo();
+
+        dispatch({
+          type: actionType.SET_USER_DETAILS,
+          userDetails: data,
+        });
+      };
+      userInfoDetails();
+    });
   }, []);
 
   return (
