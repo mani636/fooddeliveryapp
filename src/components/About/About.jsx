@@ -1,5 +1,6 @@
 import './About.css';
 import AboutImg from '../../assets/Food-Plate.png';
+import { Link } from 'react-scroll';
 
 const About = () => {
   return (
@@ -23,7 +24,7 @@ const About = () => {
           accusantium corrupti excepturi optio. Inventore, cupiditate
           recusandae.
         </p>
-        <button>Order Now</button>
+        <Link to='menu'>Order Now</Link>
       </div>
     </div>
   );

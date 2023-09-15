@@ -1,6 +1,7 @@
 import './Home.css';
 import MainImg from '../../assets/main_img.png';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import { Link } from 'react-scroll';
 
 const Home = () => {
   return (
@@ -21,10 +22,10 @@ const Home = () => {
           quo sunt esse tempore inventore vel voluptate, amet laudantium
           adipisci veniam nihil quam molestiae omnis mollitia.
         </p>
-        <button className='order-btn'>
+        <Link to='menu' className='order-btn'>
           Order Now
           <MdKeyboardArrowRight className='arrow-right' />
-        </button>
+        </Link>
       </div>
 
       <div className='main-image'>

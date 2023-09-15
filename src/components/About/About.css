@@ -46,7 +46,7 @@
   margin-bottom: 1rem;
 }
 
-.about-right-container button {
+.about-right-container a {
   background-color: #fac031;
   padding: 0.75rem 1.5rem;
   outline: 0;
