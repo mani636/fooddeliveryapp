@@ -14,7 +14,8 @@ export const getAllFoodItems = async () => {
 
 // get profile information
 export const getUserInfo = async () => {
-  const users = await getDocs(query(collection(firestore, 'users')));
+  const collectionRef = collection(firestore, 'users');
+  const users = await getDocs(collectionRef);
 
   return users.docs.map((doc) => doc.data());
 };

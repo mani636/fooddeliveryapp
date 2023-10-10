@@ -6,30 +6,36 @@ import { useStateValue } from '../../context/StateProvider';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, provider, firestore } from '../../firebase/firebase.config';
 import { actionType } from '../../context/reducer';
-import { addDoc, collection } from 'firebase/firestore';
+import { useUserContext } from '../../context/UserContext';
+import { setDoc, doc } from 'firebase/firestore';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isShowLogin, setIsShowLogin] = useState(false);
   const navigate = useNavigate();
   const [{ user, isLogin }, dispatch] = useStateValue();
+
+  const { setLoginUser } = useUserContext();
 
   const loginWithGoogle = async () => {
     await signInWithPopup(auth, provider)
       .then((userCredential) => {
         const response = userCredential.user;
 
-        // addDoc(collection(firestore, 'users'), {
-        //   id: user.uid,
-        //   firstName: 'NULL',
-        //   lastName: 'NULL',
-        //   image: 'NULL',
-        //   email: user.email,
-        //   gander: 'NULL',
-        //   age: 'NULL',
-        //   phoneNo: 'NULL',
-        // });
+        setLoginUser(response.uid);
+
+        const collectionRef = doc(firestore, 'users', response.uid);
+
+        setDoc(collectionRef, {
+          id: response.uid,
+          firstName: 'NULL',
+          lastName: 'NULL',
+          image: 'NULL',
+          email: response.email,
+          gender: 'NULL',
+          age: 'NULL',
+          phoneNo: 'NULL',
+        });
 
         dispatch({
           type: actionType.SET_USER,
@@ -37,13 +43,12 @@ const Login = () => {
           isLogin: !isLogin,
         });
 
-        localStorage.setItem('user', JSON.stringify(response.providerData[0]));
+        localStorage.setItem('user', JSON.stringify(response.uid));
 
         navigate('/');
       })
       .catch((error) => {
-        console.log(error.Message);
-        console.log(error.Code);
+        console.log(error);
       });
   };
 
@@ -52,13 +57,15 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
 
+        setLoginUser(user.uid);
+
         dispatch({
           type: actionType.SET_USER,
           user: user.providerData,
           isLogin: !isLogin,
         });
 
-        localStorage.setItem('user', JSON.stringify(user.providerData[0]));
+        localStorage.setItem('user', JSON.stringify(user.uid));
 
         navigate('/');
       })
@@ -69,7 +76,8 @@ const Login = () => {
   };
 
   const showTestLogin = () => {
-    setIsShowLogin(!isShowLogin);
+    setEmail('test@gmail.com');
+    setPassword('test@123');
   };
 
   return (
@@ -110,12 +118,6 @@ const Login = () => {
           >
             Test Credentials
           </button>
-          {isShowLogin && (
-            <div>
-              <p>Email: test@gmail.com</p>
-              <p>Password: test@123</p>
-            </div>
-          )}
         </div>
 
         <div className='login-with-google'>

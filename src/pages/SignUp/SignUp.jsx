@@ -3,7 +3,7 @@ import './SignUp.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, firestore } from '../../firebase/firebase.config';
 import { useState } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -21,16 +21,19 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        console.log(user);
 
-        const collectionRef = collection(firestore, 'users');
+        const collectionRef = doc(firestore, 'users', user.uid);
 
-        addDoc(collectionRef, {
+        console.log(collectionRef);
+
+        setDoc(collectionRef, {
           id: user.uid,
           firstName: firstName,
           lastName: lastName,
           image: 'NULL',
           email: user.email,
-          gander: 'NULL',
+          gender: 'NULL',
           age: 'NULL',
           phoneNo: 'NULL',
         });

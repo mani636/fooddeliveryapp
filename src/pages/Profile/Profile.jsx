@@ -1,101 +1,87 @@
 import React, { useEffect, useState } from 'react';
 import './Profile.css';
 import { BiSolidPencil } from 'react-icons/bi';
-import { useStateValue } from '../../context/StateProvider';
-import { doc, updateDoc } from 'firebase/firestore';
-import { firestore } from '../../firebase/firebase.config';
-import { getUserInfo } from '../../utils/firebaseFunction';
-import { actionType } from '../../context/reducer';
+
+import { useUserContext } from '../../context/UserContext';
+import { firestore, storage } from '../../firebase/firebase.config';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const Profile = () => {
-  const [{ userDetails, user, dispatch }] = useStateValue();
+  const { data, setData, userProfile } = useUserContext();
 
-  const [data, setData] = useState();
-  const [loginUserEmail, setLoginUserEmail] = useState(user.email);
-
-  const [email, setEmail] = useState();
-  const [id, setId] = useState();
-  const [image, setImage] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [phoneNo, setPhoneNo] = useState();
-  const [age, setAge] = useState();
-  const [gander, setGander] = useState();
-  const [modifiedField, setModifiedField] = useState({});
-
-  const userProfile = () => {
-    console.log(userDetails);
-    const filterUser =
-      userDetails && userDetails.find((user) => user.email === loginUserEmail);
-
-    if (userDetails && filterUser) {
-      setId(filterUser.id);
-      setEmail(filterUser.email);
-      setFirstName(filterUser.firstName);
-      setLastName(filterUser.lastName);
-      setGander(filterUser.gander);
-      setAge(filterUser.age);
-      setImage(filterUser.image);
-      setPhoneNo(filterUser.phoneNo);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     userProfile();
   }, []);
 
-  const userInfoDetails = async () => {
-    await getUserInfo().then((data) => {
-      dispatch({
-        type: actionType.SET_USER_DETAILS,
-        userDetails: data,
-      });
-    });
+  const [user, setUser] = useState(data);
+
+  const clickHandler = async () => {
+    setData(user);
+    try {
+      const snap = await getDoc(doc(firestore, 'users', user.id));
+
+      if (snap.exists()) {
+        await updateDoc(doc(firestore, 'users', user.id), { ...user });
+      } else {
+        console.log('No such document');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    navigate('/');
+    toast.success('Profile Update Successfully !');
   };
 
-  const updatedUserProfile = async () => {
-    const documentRef = doc(firestore, 'users', id);
+  const changeHandler = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+
+    setUser({ ...user, [key]: value });
+  };
+
+  const uploadImage = async (e) => {
+    const imageFile = e.target.files[0];
+
     try {
-      await updateDoc(documentRef, {
-        id,
-        firstName,
-        lastName,
-        // image,
-        email,
-        gander,
-        age,
-        phoneNo,
-      });
-
-      // userInfoDetails();
-      console.log(
-        id,
-        firstName,
-        lastName,
-
-        email,
-        gander,
-        age,
-        phoneNo
+      const storageRef = await ref(
+        storage,
+        `user/${Date.now()}-${imageFile.name}`
       );
-    } catch (error) {
-      console.log(error);
+      const uploadTask = await uploadBytesResumable(storageRef, imageFile);
+
+      getDownloadURL(storageRef).then((downloadURL) => {
+        setUser({ ...user, image: downloadURL });
+        toast.success('Image Uploaded Successfully!');
+      });
+    } catch (err) {
+      console.log(`Error Occured while uploading profile image`, err.message);
     }
   };
 
   return (
     <div className='profile'>
-      <div key={id}>
+      <div>
         <div className='profile-top-container'>
           <h1>Personal Info</h1>
           <div className='profile-img-container'>
-            <img src={image} alt={firstName} />
-            <div className='edit-img-box'>
-              <button type='button' className='edit-img-btn'>
-                Edit
-                <BiSolidPencil />
-              </button>
-            </div>
+            <img src={data?.image} alt={data?.firstName} />
+
+            <label htmlFor='image' className='edit-img-btn'>
+              upload photo
+              <input
+                type='file'
+                accept='image/*'
+                name='image'
+                className='upload-img'
+                id='image'
+                onChange={uploadImage}
+              />
+            </label>
           </div>
         </div>
 
@@ -105,33 +91,36 @@ const Profile = () => {
           <div className='personal-info-container'>
             <div className='name-container'>
               <div className='name'>
-                <label htmlFor='firstname'>Firstname*</label>
+                <label htmlFor='firstName'>Firstname*</label>
                 <input
                   type='text'
-                  id='firstname'
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  id='firstName'
+                  name='firstName'
+                  value={user?.firstName}
+                  onChange={changeHandler}
                 />
               </div>
 
               <div className='name'>
-                <label htmlFor='lastname'>Last name*</label>
+                <label htmlFor='lastName'>Last name*</label>
                 <input
                   type='text'
-                  id='lastname'
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  id='lastName'
+                  name='lastName'
+                  value={user?.lastName}
+                  onChange={changeHandler}
                 />
               </div>
             </div>
 
             <div className='name-container'>
               <div className='name'>
-                <label htmlFor='gander'>Gander*</label>
+                <label htmlFor='gender'>Gander*</label>
                 <select
-                  id='gander'
-                  value={gander}
-                  onChange={(e) => setGander(e.target.value)}
+                  id='gender'
+                  name='gender'
+                  value={user?.gender}
+                  onChange={changeHandler}
                 >
                   <option value='male'>Male</option>
                   <option value='female'>Female</option>
@@ -142,10 +131,11 @@ const Profile = () => {
               <div className='name'>
                 <label htmlFor='age'>Age*</label>
                 <input
-                  type='number'
+                  type='text'
                   id='age'
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
+                  name='age'
+                  value={user?.age}
+                  onChange={changeHandler}
                 />
               </div>
             </div>
@@ -162,25 +152,27 @@ const Profile = () => {
                 <input
                   type='email'
                   id='email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name='email'
+                  value={user?.email}
+                  onChange={changeHandler}
                 />
               </div>
 
               <div className='name'>
-                <label htmlFor='phoneno'>Phone No*</label>
+                <label htmlFor='phoneNo'>Phone No*</label>
                 <input
-                  type='number'
-                  id='phoneno'
-                  value={phoneNo}
-                  onChange={(e) => setPhoneNo(e.target.value)}
+                  type='text'
+                  id='phoneNo'
+                  name='phoneNo'
+                  value={user?.phoneNo}
+                  onChange={changeHandler}
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <button className='profile-update-btn' onClick={updatedUserProfile}>
+        <button className='profile-update-btn' onClick={clickHandler}>
           Save
         </button>
       </div>

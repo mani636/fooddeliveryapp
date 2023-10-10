@@ -21,7 +21,3 @@ const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
 export { app, firestore, storage, auth, provider };
-
-onAuthStateChanged(auth, (user) => {
-  // console.log(user);
-});

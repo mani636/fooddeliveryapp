@@ -15,7 +15,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/firebase.config';
 
 const App = () => {
-  const [{ foodItems, userDetails, isLogin }, dispatch] = useStateValue();
+  const [{ isLogin }, dispatch] = useStateValue();
   useEffect(() => {
     const fetchData = async () => {
       await getAllFoodItems().then((data) => {
@@ -27,20 +27,6 @@ const App = () => {
     };
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      const userInfoDetails = async () => {
-        const data = await getUserInfo();
-
-        dispatch({
-          type: actionType.SET_USER_DETAILS,
-          userDetails: data,
-        });
-      };
-      userInfoDetails();
-    });
   }, []);
 
   return (
